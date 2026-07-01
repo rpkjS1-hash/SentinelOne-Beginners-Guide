@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SentinelOne Beginners Guide: MacBook EPP Scenario</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        .content {
+            padding: 40px;
+        }
+        .scenario-intro {
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+        .scenario-intro h2 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .scenario-intro p {
+            color: #555;
+            font-size: 1.05em;
+        }
+        .topic-section {
+            margin-bottom: 50px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 40px;
+        }
+        .topic-section:last-child {
+            border-bottom: none;
+        }
+        .topic-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        .topic-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+        .topic-header h2 {
+            font-size: 2em;
+            color: #333;
+        }
+        .topic-subtitle {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        .definition {
+            background: #fff8e6;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 6px;
+        }
+        .definition h4 {
+            color: #f39c12;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        .scenario-box {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 6px;
+        }
+        .scenario-box h4 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        .scenario-box p {
+            color: #333;
+            margin: 10px 0;
+        }
+        .key-points {
+            background: #f3e5f5;
+            border-left: 4px solid #9c27b0;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 6px;
+        }
+        .key-points h4 {
+            color: #6a1b9a;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        .key-points ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .key-points li {
+            padding: 8px 0;
+            color: #333;
+            padding-left: 25px;
+            position: relative;
+        }
+        .key-points li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #6a1b9a;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        .flow-diagram {
+            background: #eceff1;
+            border: 2px solid #90caf9;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            color: #1976d2;
+        }
+        .flow-diagram .step {
+            display: inline-block;
+            background: white;
+            border: 2px solid #90caf9;
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 6px;
+            font-weight: bold;
+            color: #1976d2;
+        }
+        .flow-diagram .arrow {
+            display: inline-block;
+            margin: 0 10px;
+            font-weight: bold;
+            color: #1976d2;
+            font-size: 1.2em;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .comparison-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+        .comparison-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        .real-world {
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 6px;
+        }
+        .real-world h4 {
+            color: #c62828;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+            margin: 20px 0;
+        }
+        .timeline-item {
+            padding: 15px 0 15px 50px;
+            border-left: 3px solid #667eea;
+            position: relative;
+            background: #f9f9f9;
+            margin: 10px 0;
+            padding-left: 35px;
+            border-radius: 4px;
+            padding: 15px;
+            padding-left: 50px;
+        }
+        .timeline-item:before {
+            content: "";
+            position: absolute;
+            left: -10px;
+            top: 20px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border: 3px solid #667eea;
+            border-radius: 50%;
+        }
+        .timeline-item strong {
+            color: #667eea;
+        }
+        .note {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+            color: #1565c0;
+            font-size: 0.95em;
+        }
+        footer {
+            background: #f5f5f5;
+            padding: 30px 40px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #eee;
+        }
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .nav-tabs button {
+            padding: 10px 20px;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            color: #666;
+        }
+        .nav-tabs button:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+        .nav-tabs button.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+        .learning-path {
+            background: #f0f4ff;
+            border: 2px dashed #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .learning-path h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        .learning-path ol {
+            color: #333;
+            padding-left: 20px;
+        }
+        .learning-path li {
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🛡️ SentinelOne Beginners Guide</h1>
+            <p>Learn the Singularity Platform Through a Real MacBook Scenario</p>
+        </header>
+
+        <div class="content">
+            <!-- Scenario Intro -->
+            <div class="scenario-intro">
+                <h2>📖 The Scenario: Sarah's MacBook</h2>
+                <p>
+                    <strong>Sarah is a marketing manager</strong> who just received a new MacBook Pro for work. Her company, TechCorp, deployed SentinelOne's EPP (Endpoint Protection Platform) agent on all company devices. Over the next few weeks, we'll follow her MacBook through various security events to understand how SentinelOne works—from basic threat prevention all the way to advanced threat detection and response.
+                </p>
+            </div>
+
+            <!-- Learning Path -->
+            <div class="learning-path">
+                <h4>🎯 Your Learning Journey</h4>
+                <ol>
+                    <li><strong>EPP (Endpoint Protection Platform)</strong> — What protects Sarah's Mac from malware right now</li>
+                    <li><strong>EDR (Endpoint Detection & Response)</strong> — What happens when EPP alone isn't enough</li>
+                    <li><strong>XDR (Extended Detection & Response)</strong> — How SentinelOne connects the dots across her entire environment</li>
+                    <li><strong>Deep Visibility</strong> — The power to see everything happening on Sarah's Mac</li>
+                    <li><strong>STAR Custom Rules</strong> — Building custom detections for threats specific to TechCorp</li>
+                    <li><strong>Purple AI</strong> — AI-powered threat analysis and faster response</li>
+                    <li><strong>Cloud Security</strong> — Protecting TechCorp's AWS infrastructure</li>
+                    <li><strong>Identity Security</strong> — Securing Sarah's login and access rights</li>
+                </ol>
+            </div>
+
+            <!-- TOPIC 1: EPP -->
+            <div class="topic-section">
+                <div class="topic-header">
+                    <div class="topic-number">1</div>
+                    <div>
+                        <h2>EPP: Endpoint Protection Platform</h2>
+                        <div class="topic-subtitle">Real-time threat prevention before threats even run</div>
+                    </div>
+                </div>
+
+                <div class="definition">
+                    <h4>💡 What is EPP?</h4>
+                    <p>
+                        EPP is like a <strong>security guard at the door</strong> of Sarah's MacBook. It runs continuously in the background and stops known threats (malware, viruses, ransomware) from even executing. If a malicious file tries to run, EPP blocks it immediately—before it can cause harm.
+                    </p>
+                </div>
+
+                <div class="scenario-box">
+                    <h4>🎬 Scenario: The Suspicious Email</h4>
+                    <p><strong>Day 1:</strong> Sarah downloads an email attachment that looks like a vendor invoice. Unknown to her, it's actually a trojan malware disguised as a PDF.</p>
+                    <p><strong>What EPP does:</strong></p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>✓ Scans the file before it opens</li>
+                        <li>✓ Matches it against a database of 100+ million known malware signatures</li>
+                        <li>✓ Recognizes the trojan and blocks execution instantly</li>
+                        <li>✓ Quarantines the file (moves it to a safe isolation folder)</li>
+                        <li>✓ Sends an alert to TechCorp's security team</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>Result:</strong> Sarah never even knows the malware existed. EPP stopped it cold.</p>
+                </div>
+
+                <div class="key-points">
+                    <h4>🔑 Key EPP Capabilities</h4>
+                    <ul>
+                        <li><strong>Signature-based detection:</strong> Recognizes known threats by their "fingerprint"</li>
+                        <li><strong>Heuristic analysis:</strong> Spots suspicious behavior patterns (files acting like malware without being a known signature)</li>
+                        <li><strong>Real-time scanning:</strong> Inspects every file as it runs, before it can infect</li>
+                        <li><strong>Quarantine:</strong> Safely isolates threats so they can't spread</li>
+                        <li><strong>Always-on protection:</strong> Runs continuously, even when Sarah isn't using the device</li>
+                    </ul>
+                </div>
+
+                <div class="note">
+                    <strong>📌 Note for Beginners:</strong> EPP is about <strong>prevention</strong>. It stops threats you know about (signature-based). But what if a brand-new threat emerges that EPP doesn't recognize? That's where EDR comes in.
+                </div>
+            </div>
+
+            <!-- TOPIC 2: EDR -->
+            <div class="topic-section">
+                <div class="topic-header">
+                    <div class="topic-number">2</div>
+                    <div>
+                        <h2>EDR: Endpoint Detection & Response</h2>
+                        <div class="topic-subtitle">Spot unknown threats and respond in real-time</div>
+                    </div>
+                </div>
+
+                <div class="definition">
+                    <h4>💡 What is EDR?</h4>
+                    <p>
+                        EDR is like a <strong>surveillance camera with a security analyst watching 24/7</strong>. It tracks everything happening on Sarah's Mac—every process, file, network connection, and behavior—looking for suspicious activity that <em>might</em> be a threat, even if it's brand new and doesn't match any known malware signature.
+                    </p>
+                </div>
+
+                <div class="scenario-box">
+                    <h4>🎬 Scenario: The Zero-Day Attack</h4>
+                    <p><strong>Day 10:</strong> A hacker exploits a brand-new, never-before-seen vulnerability in a popular application on Sarah's Mac. EPP doesn't recognize it because it's zero-day (no signature exists yet).</p>
+                    <p><strong>What EDR does:</strong></p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>✓ Monitors the compromised app's behavior in real-time</li>
+                        <li>✓ Spots suspicious actions: trying to access system files, creating hidden processes, attempting to steal credentials</li>
+                        <li>✓ Triggers an alert: "Suspicious behavior detected on Sarah's Mac"</li>
+                        <li>✓ Records a detailed forensic timeline (what happened, when, in what order)</li>
+                        <li>✓ Alerts TechCorp's SOC (Security Operations Center) team immediately</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>Response Options:</strong></p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>🔴 <strong>Isolate the Mac:</strong> Disconnect it from the network (no internet, no internal access) to contain the threat</li>
+                        <li>🔴 <strong>Terminate the process:</strong> Kill the malicious process automatically</li>
+                        <li>🔴 <strong>Rollback:</strong> Undo changes the malware made to system files</li>
+                        <li>🔴 <strong>Quarantine files:</strong> Isolate any files created or modified by the threat</li>
+                    </ul>
+                </div>
+
+                <div class="key-points">
+                    <h4>🔑 Key EDR Capabilities</h4>
+                    <ul>
+                        <li><strong>Behavioral detection:</strong> Spots <em>suspicious behavior</em>, not just known signatures</li>
+                        <li><strong>Threat hunting:</strong> Analysts can manually search for suspicious patterns</li>
+                        <li><strong>Response actions:</strong> Isolate devices, kill processes, quarantine files—all automated</li>
+                        <li><strong>Forensic timeline:</strong> Complete record of what happened (invaluable for investigation)</li>
+                        <li><strong>Threat intelligence:</strong> Learns from threats across all customer endpoints to improve detection</li>
+                    </ul>
+                </div>
+
+                <div class="comparison-table">
+                    <tr>
+                        <th>Aspect</th>
+                        <th>EPP (Prevention)</th>
+                        <th>EDR (Detection & Response)</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Threat Type</strong></td>
+                        <td>Known malware (signatures exist)</td>
+                        <td>Unknown & advanced threats (zero-day, APT)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Detection Method</strong></td>
+                        <td>Signature matching + heuristics</td>
+                        <td>Behavior monitoring + ML analysis</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Speed</strong></td>
+                        <td>Instant prevention (pre-execution)</td>
+                        <td>Real-time detection (during execution)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Response</strong></td>
+                        <td>Automatic block + quarantine</td>
+                        <td>Automated + manual response options</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Investigation</strong></td>
+                        <td>Limited forensics</td>
+                        <td>Deep forensic timeline</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- TOPIC 3: Deep Visibility -->
+            <div class="topic-section">
+                <div class="topic-header">
+                    <div class="topic-number">3</div>
+                    <div>
+                        <h2>Deep Visibility</h2>
+                        <div class="topic-subtitle">See every process, file, and network activity in real-time</div>
+                    </div>
+                </div>
+
+                <div class="definition">
+                    <h4>💡 What is Deep Visibility?</h4>
+                    <p>
+                        Deep Visibility is SentinelOne's <strong>forensic engine</strong>. It captures and indexes <strong>every single event</strong> on Sarah's Mac—every process that launched, every file accessed, every network connection, every registry change. You can then search and investigate these events retroactively to answer questions like "What did this malware do?" or "Did the attacker access these files?"
+                    </p>
+                </div>
+
+                <div class="scenario-box">
+                    <h4>🎬 Scenario: Post-Breach Investigation</h4>
+                    <p><strong>Day 15:</strong> The SOC team confirms Sarah's Mac was breached 5 days ago. Now they need to investigate: What files did the attacker access? Did they exfiltrate data? What other systems did they touch?</p>
+                    <p><strong>What Deep Visibility does:</strong></p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>✓ Lets the analyst search: "Show me all network connections from Sarah's Mac in the last 7 days"</li>
+                        <li>✓ Displays: 1,247 unique DNS lookups, 89 HTTP/S connections, 3 SSH attempts</li>
+                        <li>✓ Lets them drill down: "Show me files accessed by user 'sarah' on Day 10"</li>
+                        <li>✓ Returns: 456 files accessed; highlights 23 that were read AND modified (suspicious pattern)</li>
+                        <li>✓ Shows the chain of events: Process A launched Process B, which accessed File C, which triggered network connection to IP D</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>Result:</strong> The team reconstructs the attack step-by-step, confirming the attacker accessed customer data files and sent them to an external server at 2:47 AM on Day 10.</p>
+                </div>
+
+                <div class="key-points">
+                    <h4>🔑 Key Deep Visibility Features</h4>
+                    <ul>
+                        <li><strong>Process telemetry:</strong> Who launched what process, when, with what arguments</li>
+                        <li><strong>File activity:</strong> Every file open, read, write, delete, rename, modify</li>
+                        <li><strong>Network forensics:</strong> DNS queries, IP connections, port usage, data exfiltration patterns</li>
+                        <li><strong>Registry/System changes:</strong> Configuration modifications, privilege escalations</li>
+                        <li><strong>Full chain-of-custody:</strong> Parent → child process relationships, file ownership, user context</li>
+                        <li><strong>Queryable history:</strong> Search by date, user, process name, IP, domain, file path—with AND/OR logic</li>
+                    </ul>
+                </div>
+
+                <div class="flow-diagram">
+                    <div class="step">Sarah opens PDF</div>
+                    <div class="arrow">→</div>
+                    <div class="step">PDF app spawns process</div>
+                    <div class="arrow">→</div>
+                    <div class="step">Process connects to IP 1.2.3.4</div>
+                    <div class="arrow">→</div>
+                    <div class="step">Deep Visibility records all 4 events with timestamps & metadata</div>
+                </div>
+
+                <div class="note">
+                    <strong>💾 Storage Note:</strong> Deep Visibility retains event data for 365+ days (depending on subscription), so you can investigate breaches that happened weeks or months ago. This forensic history is gold for compliance (GDPR, HIPAA investigations require proof of what happened).
+                </div>
+            </div>
+
+            <!-- TOPIC 4: XDR -->
+            <div class="topic-section">
+                <div class="topic-header">
+                    <div class="topic-number">4</div>
+                    <div>
+                        <h2>XDR: Extended Detection & Response</h2>
+                        <div class="topic-subtitle">Connect dots across endpoints, networks, cloud, and identity</div>
+                    </div>
+                </div>
+
+                <div class="definition">
+                    <h4>💡 What is XDR?</h4>
+                    <p>
+                        XDR is <strong>EDR on steroids</strong>. It doesn't just monitor Sarah's Mac in isolation. Instead, it correlates data from <strong>multiple sources</strong> (endpoint, network, cloud, identity, email) to detect sophisticated multi-stage attacks that would be invisible if you only looked at one device. It's like connecting security cameras across an entire building instead of watching one room.
+                    </p>
+                </div>
+
+                <div class="scenario-box">
+                    <h4>🎬 Scenario: The Multi-Stage APT Attack</h4>
+                    <p><strong>Day 20:</strong> A nation-state APT (Advanced Persistent Threat) targets TechCorp. The attack uses 4 stages:</p>
+                    <ul style="margin-left: 20px; margin-top: 10px; font-size: 0.95em;">
+                        <li><strong>Stage 1 (Initial Compromise):</strong> Phishing email to Sarah (endpoint event)</li>
+                        <li><strong>Stage 2 (Lateral Movement):</strong> Attacker uses Sarah's credentials to access the network (network event)</li>
+                        <li><strong>Stage 3 (Privilege Escalation):</strong> Attacker exploits a vulnerability to gain admin rights (endpoint + identity event)</li>
+                        <li><strong>Stage 4 (Data Exfiltration):</strong> Attacker logs into AWS S3 bucket and downloads customer data (cloud event)</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>With EPP/EDR alone:</strong> Each stage might trigger a separate, isolated alert. Analyst says "Sarah's Mac was compromised" but doesn't connect it to the AWS breach.</p>
+                    <p><strong>With XDR:</strong></p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>✓ SentinelOne correlates all 4 events automatically</li>
+                        <li>✓ Creates a single, unified threat timeline: "APT Campaign detected—4 stages, 8 affected systems"</li>
+                        <li>✓ Immediately shows: Sarah's Mac → Network servers → AWS S3 (data stolen)</li>
+                        <li>✓ Recommends: Isolate Sarah's Mac, reset AWS credentials, investigate 8 systems, alert executive team</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>Result:</strong> Attack detected in minutes (if separate alerts, might take days to correlate manually). Damage minimized.</p>
+                </div>
+
+                <div class="key-points">
+                    <h4>🔑 Key XDR Capabilities</h4>
+                    <ul>
+                        <li><strong>Multi-source correlation:</strong> Combines signals from endpoints, network, cloud, identity, email</li>
+                        <li><strong>Attack chain detection:</strong> Recognizes multi-stage attack patterns automatically</li>
+                        <li><strong>Threat scoring:</strong> Ranks threats by severity & confidence (not all alerts are equal)</li>
+                        <li><strong>Incident grouping:</strong> Automatically clusters related events into a single "incident"</li>
+                        <li><strong>Cross-platform visibility:</strong> Works on Windows, Mac, Linux, and integrates with cloud (AWS, Azure, GCP)</li>
+                    </ul>
+                </div>
+
+                <div class="real-world">
+                    <h4>🌍 Real-World XDR Value</h4>
+                    <p>
+                        In 2023, security teams without XDR averaged <strong>228 days</strong> to detect a breach (Verizon DBIR). With XDR, detection time drops to <strong>minutes to hours</strong>. For TechCorp, that difference means the APT gets caught before exfiltrating 100GB of data instead of after.
+                    </p>
+                </div>
+            </div>
+
+            <!-- TOPIC 5: STAR Custom Rules -->
+            <div class="topic-section">
+                <div class="topic-header">
+                    <div class="topic-number">5</div>
+                    <div>
+                        <h2>STAR Custom Rules</h2>
+                        <div class="topic-subtitle">Build your own threat detection logic for your environment</div>
+                    </div>
+                </div>
+
+                <div class="definition">
+                    <h4>💡 What are STAR Custom Rules?</h4>
+                    <p>
+                        STAR stands for <strong>Singularity Storyline Active Response™</strong>. Custom Rules let you write your own detection logic using SentinelOne's query language. Instead of relying only on SentinelOne's pre-built threat detection, you can craft rules tailored to <strong>your specific business threats</strong>. It's like teaching SentinelOne "Here's what bad looks like in MY company."
+                    </p>
+                </div>
+
+                <div class="scenario-box">
+                    <h4>🎬 Scenario: TechCorp's Insider Threat Rule</h4>
+                    <p><strong>Background:</strong> TechCorp discovered that competitors sometimes poach employees to steal source code before they leave. So TechCorp's security team wants to detect suspicious patterns.</p>
+                    <p><strong>The Rule:</strong> "Alert if an employee:</p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>• Uses an external USB drive for the first time</li>
+                        <li>• AND copies >50 files from /home/engineering/ to that USB</li>
+                        <li>• AND those files have extensions .py, .java, .cpp (source code)</li>
+                        <li>• ALL within a 5-minute window"</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>Day 25:</strong> A disgruntled engineer named Bob plugs in a USB drive and copies 47 Python files to it in 3 minutes. STAR Custom Rule triggers immediately. Alerts Bob's manager, who discovers Bob accepted an offer from TechCorp's competitor. The company secures his machine before he leaves with the code.</p>
+                </div>
+
+                <div class="key-points">
+                    <h4>🔑 STAR Custom Rule Workflow</h4>
+                    <ul>
+                        <li><strong>Identify your threat:</strong> What specific attack or suspicious behavior does your company need to detect?</li>
+                        <li><strong>Query your data:</strong> Use Deep Visibility to find examples of that behavior and craft a query in S1QL 2.0</li>
+                        <li><strong>Test the rule:</strong> Use the "Simulate Rule" feature to estimate alerts over 7 days based on recent data</li>
+                        <li><strong>Deploy:</strong> Activate the rule; it now runs continuously in real-time as data streams into Singularity™ Data Lake (in the cloud, not on endpoints)</li>
+                        <li><strong>Auto-respond:</strong> When the rule triggers, automatically isolate the device, kill the process, or alert the SOC (optional)</li>
+                        <li><strong>Tune over time:</strong> Investigate real alerts and adjust the rule to reduce false positives</li>
+                    </ul>
+                </div>
+
+                <div class="note">
+                    <strong>🏗️ Where STAR Rules Execute:</strong> STAR rules do NOT run on Sarah's MacBook. Instead, they run in the cloud on the Singularity™ Data Lake. As Deep Visibility events from the agent stream into SDL in real-time, the rules evaluate those events immediately (sub-second latency). This is fundamentally different from endpoint-based rules—the detection happens centrally, not distributed across agents.
+                </div>
+
+                <div class="note" style="background: #f0f4ff; border-color: #667eea; margin-top: 20px;">
+                    <strong>🎓 Example STAR Rule (Simplified):</strong><br>
+                    <code style="background: #f0f0f0; padding: 10px; border-radius: 5px; display: block; margin-top: 10px; font-family: monospace; color: #333;">
+                        tgt.process.displayName contains "powershell"<br>
+                        AND tgt.process.cmdline contains "System.Net.WebClient"<br>
+                        AND tgt.process.cmdline contains "DownloadString"<br>
+                        → Auto-isolate endpoint
+                    </code>
+                    <p style="margin-top: 10px; font-size: 0.95em;">This rule catches a common malware pattern: PowerShell downloading and executing malicious scripts from the internet. When this query matches an event stream, the rule triggers in SDL and the auto-response (isolate) executes on the endpoint.</p>
+                </div>
+            </div>
+
+            <!-- TOPIC 6: Purple AI (Updated with Agentic) -->
+            <div class="topic-section">
+                <div class="topic-header">
+                    <div class="topic-number">6</div>
+                    <div>
+                        <h2>Purple AI: Autonomous Agentic Investigations</h2>
+                        <div class="topic-subtitle">AI that investigates threats while you sleep—delivering verdicts in seconds</div>
+                    </div>
+                </div>
+
+                <div class="definition">
+                    <h4>💡 What is Purple AI Agentic Investigation?</h4>
+                    <p>
+                        Purple AI is SentinelOne's <strong>autonomous AI security analyst</strong> that investigates threats without human intervention. Instead of an analyst manually opening an alert, gathering evidence, and building a timeline (a process that takes hours), Purple AI does all of this automatically and delivers a complete verdict with evidence in seconds.
+                    </p>
+                    <p style="margin-top: 10px;">
+                        <strong>Key difference from traditional AI:</strong> Purple AI doesn't just answer questions or provide suggestions. It <em>acts autonomously</em> — gathering evidence, correlating telemetry across your entire environment, building attack timelines, and determining if a threat is real or false positive.
+                    </p>
+                </div>
+
+                <div class="scenario-box">
+                    <h4>🎬 Scenario: Alert Storm at 3 AM</h4>
+                    <p><strong>Day 35, 3:47 AM:</strong> Sarah's Mac triggers 23 suspicious process alerts. The SOC team is offline (nightshift ended). Normally, these alerts would queue until morning when analysts return.</p>
+                    <p><strong>Without Agentic Investigation:</strong> Queue builds to 50+ alerts by morning. When analysts arrive, they manually triage each one. Estimated time to verdict: 4 hours. If any are real threats, 4+ hours of damage/compromise possible.</p>
+                    <p><strong>With Purple AI Agentic Investigation (activated):</strong></p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>✓ Alert 1 triggers at 3:47:12 AM</li>
+                        <li>✓ Purple AI autonomously: Collects evidence → correlates with M365 logs → checks AWS access patterns → reviews user login history</li>
+                        <li>✓ Verdict reached in 11 seconds: "FALSE POSITIVE - legitimate Windows update process"</li>
+                        <li>✓ Alert 2 triggers at 3:47:45 AM</li>
+                        <li>✓ Purple AI autonomously: Detects suspicious PowerShell command → correlates with network connection to known malware C&C server → finds lateral movement to 2 other machines</li>
+                        <li>✓ Verdict reached in 8 seconds: "CONFIRMED THREAT - Active Intrusion"</li>
+                        <li>✓ Auto-response triggered immediately: Isolate Sarah's Mac, revoke her credentials, block the C&C IP, alert senior analyst</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>Result:</strong> Instead of waiting 4 hours for analyst triage, critical threat contained in <11 seconds. Attacker's window to steal data shrinks from hours to minutes.</p>
+                </div>
+
+                <div class="key-points">
+                    <h4>🔑 Purple AI Agentic Investigation Capabilities</h4>
+                    <ul>
+                        <li><strong>Zero-Click Autonomous Triage:</strong> When an alert hits a severity threshold you define, Purple AI automatically initiates investigation—no analyst action needed</li>
+                        <li><strong>Evidence Collection:</strong> Gathers relevant data across EDR, Cloud, Identity, and third-party sources automatically</li>
+                        <li><strong>Correlation Engine:</strong> Connects disparate signals (endpoint behavior + network traffic + user login + cloud API calls) to build a complete attack picture</li>
+                        <li><strong>Attack Timeline Construction:</strong> Builds a step-by-step narrative of what happened, when, and in what order (parent process → child process → file access → network connection)</li>
+                        <li><strong>Verdict Delivery:</strong> Outputs a clear verdict: TRUE THREAT or FALSE POSITIVE with confidence scoring</li>
+                        <li><strong>Auditable Reasoning:</strong> Complete evidence chain showing every step Purple AI took and why (no black-box AI)</li>
+                        <li><strong>Multi-Model AI Reasoning:</strong> Uses Anthropic's Claude, OpenAI's GPT-4, and SentinelOne's proprietary "Ultraviolet" models for expert-level reasoning</li>
+                    </ul>
+                </div>
+
+                <div class="real-world">
+                    <h4>📊 Real-World Impact Numbers</h4>
+                    <p>63% faster threat identification, 55% faster resolution — meaning investigations that took 2 hours now take 55 minutes. 80% reduction in manual triage workload, freeing analysts from repetitive alert reviews.</p>
+                </div>
+
+                <div class="flow-diagram">
+                    <div class="step">Alert Threshold Hit</div>
+                    <div class="arrow">→</div>
+                    <div class="step">Purple AI Auto-Triggered</div>
+                    <div class="arrow">→</div>
+                    <div class="step">Evidence Collected & Correlated</div>
+                    <div class="arrow">→</div>
+                    <div class="step">Timeline Built</div>
+                    <div class="arrow">→</div>
+                    <div class="step">Verdict Delivered (8–15 sec)</div>
+                </div>
+
+                <div class="scenario-box" style="background: #e3f2fd; border-color: #2196f3;">
+                    <h4>🎬 Agentic Investigation in Detail: The TeamViewer Intrusion</h4>
+                    <p><strong>What Happened:</strong> User logs in from an unusual location. Purple AI is triggered (risk threshold = 7/10).</p>
+                    <p><strong>What Purple AI Does (Autonomously):</strong></p>
+                    <ul style="margin-left: 20px; margin-top: 10px; font-size: 0.95em;">
+                        <li><strong>Step 1:</strong> Check Okta login logs → Confirms unusual geographic location (user normally in Singapore, now showing IP from Romania)</li>
+                        <li><strong>Step 2:</strong> Scan EDR telemetry → Detects TeamViewer remote access tool installation (not in normal baseline)</li>
+                        <li><strong>Step 3:</strong> Query prevalence → TeamViewer legitimate for IT support, but this user is in Marketing (suspicious)</li>
+                        <li><strong>Step 4:</strong> Check network connections → TeamViewer connecting to known malicious C&C IP (flagged by threat intel)</li>
+                        <li><strong>Step 5:</strong> Check file access patterns → User accessed Finance folder (normally restricted), copied 47 files, uploaded to external cloud storage</li>
+                        <li><strong>Step 6:</strong> Correlate timeline → Login @ 2:30 AM → TeamViewer installed @ 2:32 AM → Files copied @ 2:47 AM → Upload @ 3:15 AM</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>Verdict Delivered in 12 Seconds:</strong></p>
+                    <p style="margin-top: 10px; background: #ffcdd2; padding: 10px; border-radius: 5px; color: #c62828; font-weight: bold;">🔴 CONFIRMED INTRUSION - Credential compromise detected. Attacker used stolen credentials to install remote access tool and exfiltrate Finance data. Confidence: 98%.</p>
+                    <p style="margin-top: 15px;"><strong>Recommended Actions:</strong> Reset user credentials, isolate device, block C&C IP globally, quarantine exfiltrated files, alert executive team, initiate forensic investigation.</p>
+                    <p style="margin-top: 10px;"><strong>Auto-Response (if configured):</strong> Isolate Mac, revoke session tokens, quarantine files, create incident ticket.</p>
+                </div>
+
+                <div class="comparison-table">
+                    <tr>
+                        <th>Dimension</th>
+                        <th>Manual Triage (Human Analyst)</th>
+                        <th>Purple AI Agentic Investigation</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Time to Verdict</strong></td>
+                        <td>1.5–3 hours per alert</td>
+                        <td>8–15 seconds per alert</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Evidence Gathering</strong></td>
+                        <td>Manual pivot between EDR, SIEM, cloud console, identity platform</td>
+                        <td>Automatic across all data sources simultaneously</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Correlation Logic</strong></td>
+                        <td>Human pattern recognition (prone to bias, fatigue)</td>
+                        <td>AI reasoning using multiple frontier-AI models + SentinelOne proprietary ML</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Timeline Building</strong></td>
+                        <td>Manual (time-consuming, error-prone)</td>
+                        <td>Automated with full parent-child-process chain, timestamps, user context</td>
+                    </tr>
+                    <tr>
+                        <td><strong>False Positive Handling</strong></td>
+                        <td>Alert fatigues analyst; 70–80% of alerts are false positives</td>
+                        <td>Automatically validated; false positives suppressed without analyst review</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Human Dependency</strong></td>
+                        <td>Cannot work 24/7/365 (staffing constraints)</td>
+                        <td>Zero-click, works 24/7/365, no analyst availability gaps</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Scalability</strong></td>
+                        <td>More alerts = need more analysts (headcount cost)</td>
+                        <td>More alerts = same AI, no additional cost per alert</td>
+                    </tr>
+                </table>
+
+                <div class="key-points">
+                    <h4>🛡️ Key Configuration: Human-in-the-Loop Autonomy</h4>
+                    <ul>
+                        <li><strong>Level 1 - Alert Only:</strong> Purple AI investigates, delivers verdict, analyst reviews before action (most conservative)</li>
+                        <li><strong>Level 2 - Recommend & Alert:</strong> Purple AI recommends response, analyst approves before execution</li>
+                        <li><strong>Level 3 - Auto-Execute with Audit:</strong> Purple AI investigates, verdicts trigger auto-response, analyst reviews evidence chain post-execution (fastest, fully auditable)</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>Design Philosophy:</strong> "AI amplifies human defenders, not replacing them." Analysts review evidence chains, adjust thresholds, and make judgment calls on complex cases. Purple AI eliminates drudgery.</p>
+                </div>
+
+                <div class="note">
+                    <strong>💳 Singularity Credits:</strong> Agentic Investigation uses "Singularity Credits"—a unified currency for AI-powered work across the Singularity Platform. Customers receive a free allotment to trial the capability (no charge). After trial, credits can be purchased through partners or direct billing. Each investigation consumes a small number of credits based on complexity.
+                </div>
+
+                <div class="real-world">
+                    <h4>🏢 MSP/MDR Use Case</h4>
+                    <p>
+                        For Managed Service Providers (MSPs) and Managed Detection & Response (MDR) teams, each autonomous investigation saves 20–30 minutes of analyst time, allowing providers to scale coverage without adding headcount. A typical SOC with 50 alerts/day can reclaim 15–25 analyst hours weekly by using agentic investigations for triage.
+                    </p>
+                </div>
+            </div>
+
+            <!-- TOPIC 7: Cloud Security (Comprehensive) -->
+            <div class="topic-section">
+                <div class="topic-header">
+                    <div class="topic-number">7</div>
+                    <div>
+                        <h2>Cloud Security: Singularity Cloud (CNAPP)</h2>
+                        <div class="topic-subtitle">Unified protection for cloud infrastructure, workloads, and data from build-time to runtime</div>
+                    </div>
+                </div>
+
+                <div class="definition">
+                    <h4>💡 What is Singularity Cloud?</h4>
+                    <p>
+                        Singularity Cloud Security is SentinelOne's <strong>Cloud-Native Application Protection Platform (CNAPP)</strong>—a unified solution that protects cloud infrastructure, workloads, and data across their entire lifecycle. Unlike traditional cloud tools that protect only one layer (e.g., misconfigurations OR runtime threats), Singularity Cloud combines <strong>five integrated security functions</strong> into one data model.
+                    </p>
+                </div>
+
+                <div class="key-points">
+                    <h4>🔑 The Five Pillars of Singularity Cloud (CNAPP)</h4>
+                    <ul>
+                        <li><strong>CSPM (Cloud Security Posture Management):</strong> Detects misconfigurations and compliance gaps in your cloud infrastructure (AWS, Azure, GCP). Runs agentless—no software needed.</li>
+                        <li><strong>CWPP (Cloud Workload Protection Platform):</strong> Real-time runtime protection for VMs, containers, Kubernetes, and serverless workloads. Detects ransomware, zero-days, fileless malware.</li>
+                        <li><strong>CIEM (Cloud Infrastructure Entitlement Management):</strong> Discovers excessive or misconfigured identity permissions that attackers could exploit for privilege escalation and lateral movement.</li>
+                        <li><strong>DSPM (Data Security Posture Management):</strong> Identifies and protects sensitive data across cloud storage (S3 buckets, Azure Blob, Google Cloud Storage) from exposure and theft.</li>
+                        <li><strong>CDR (Cloud Detection & Response):</strong> Real-time threat detection and forensics across cloud infrastructure, correlating events and providing automated response.</li>
+                    </ul>
+                </div>
+
+                <div class="scenario-box">
+                    <h4>🎬 Scenario: The Multi-Layer Cloud Attack</h4>
+                    <p><strong>Day 25:</strong> An attacker targets TechCorp's AWS infrastructure with a multi-step attack chain:</p>
+                    <ul style="margin-left: 20px; margin-top: 10px; font-size: 0.95em;">
+                        <li><strong>Step 1 (Posture Gap):</strong> Attacker discovers an S3 bucket configured with public read access (misconfiguration). No encryption enabled.</li>
+                        <li><strong>Step 2 (Entitlement Gap):</strong> Attacker gains access to an IAM role with overly permissive permissions (can access any resource in the account).</li>
+                        <li><strong>Step 3 (Runtime Attack):</strong> Attacker launches a container workload to mine cryptocurrency, consuming 95% CPU and costing TechCorp $50K/month.</li>
+                        <li><strong>Step 4 (Data Theft):</strong> Attacker accesses the misconfigured S3 bucket and exfiltrates 2GB of customer data.</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>Traditional Solutions (Point Tools):</strong> Three separate teams detect three separate problems at different times:</p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>CSPM team: "We found the S3 bucket issue" (but too late—already exploited)</li>
+                        <li>CWPP team: "We detected cryptominers" (but no context on how attacker got there)</li>
+                        <li>Data team: "We found data exfiltration" (but incident already happened)</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>With Singularity Cloud (Unified CNAPP):</strong></p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>✓ CSPM detects S3 misconfiguration → alerts in real-time</li>
+                        <li>✓ CIEM identifies overly permissive IAM role → alerts with remediation steps</li>
+                        <li>✓ CWPP detects suspicious container launch → correlates to Step 2 context (attacker assumed to have breached credentials)</li>
+                        <li>✓ DSPM flags unauthorized S3 access → blocks attempt, prevents data theft</li>
+                        <li>✓ CDR builds unified attack timeline: Misconfiguration → Credential Misuse → Workload Compromise → Data Access Blocked</li>
+                        <li>✓ Purple AI generates: "High-confidence APT activity detected. Attack chain: configuration gap → privilege escalation → lateral movement → data access. Recommend: revoke credentials, patch S3, isolate workload."</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>Result:</strong> Attack detected and blocked at Step 4; only misconfiguration exposed, no data stolen.</p>
+                </div>
+
+                <div class="scenario-box" style="background: #e8f5e9; border-color: #4caf50;">
+                    <h4>🏗️ Build-Time vs. Runtime Protection</h4>
+                    <p><strong>Build-Time Security (Dev Pipeline):</strong></p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>Infrastructure-as-Code (IaC) scanning — detects misconfigurations in Terraform, CloudFormation before deployment</li>
+                        <li>Secrets scanning — finds 750+ types of hardcoded secrets (API keys, passwords, tokens) in repositories</li>
+                        <li>Container scanning — identifies vulnerable images, malware before they ship to production</li>
+                        <li>Shift-left security — catch misconfigurations in dev, not production</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>Runtime Security (Production):</strong></p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>Real-time malware/ransomware detection in running containers and VMs</li>
+                        <li>Container drift detection — alerts if containers are modified after launch (attackers install backdoors)</li>
+                        <li>Process execution analysis — detects suspicious commands, privilege escalation attempts</li>
+                        <li>Network forensics — tracks data exfiltration, lateral movement attempts</li>
+                        <li>Zero-day protection via behavioral AI (not just signatures)</li>
+                    </ul>
+                </div>
+
+                <div class="comparison-table">
+                    <tr>
+                        <th>Component</th>
+                        <th>Focus</th>
+                        <th>Deployment</th>
+                        <th>Typical Alert</th>
+                    </tr>
+                    <tr>
+                        <td><strong>CSPM</strong></td>
+                        <td>Configuration & compliance risks</td>
+                        <td>Agentless (read-only API)</td>
+                        <td>"S3 bucket publicly readable; S3 encryption disabled"</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CWPP</strong></td>
+                        <td>Runtime threats in workloads</td>
+                        <td>Agent-based (eBPF) + agentless scanning</td>
+                        <td>"Ransomware detected in container; process killed automatically"</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CIEM</strong></td>
+                        <td>Identity & access risks</td>
+                        <td>Agentless (API-based)</td>
+                        <td>"IAM role has 847 over-privileged permissions; can access all S3 buckets"</td>
+                    </tr>
+                    <tr>
+                        <td><strong>DSPM</strong></td>
+                        <td>Data exposure & theft</td>
+                        <td>Agentless (scanning)</td>
+                        <td>"PII dataset (2GB) in unencrypted S3 bucket; 3 unauthorized access attempts blocked"</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CDR</strong></td>
+                        <td>Threat correlation & response</td>
+                        <td>Cloud-native (logs + telemetry)</td>
+                        <td>"Multi-step attack: config gap → privilege escalation → container compromise"</td>
+                    </tr>
+                </table>
+
+                <div class="real-world">
+                    <h4>📊 Why CNAPP > Point Tools</h4>
+                    <p>
+                        Attackers chain exposures across all five layers in a single attack. A misconfiguration becomes lateral movement; a credential becomes privilege escalation. Point tools (e.g., CSPM-only) see only one layer. A unified CNAPP sees the attack chain and blocks it.
+                    </p>
+                    <p style="margin-top: 10px;">
+                        SentinelOne combines agentless capabilities (CSPM, KSPM, vulnerability management) with strong agent-based runtime protection (CWPP) — the best of both worlds.
+                    </p>
+                </div>
+
+                <div class="key-points">
+                    <h4>🛡️ Singularity Cloud Architecture: "One Data Model"</h4>
+                    <ul>
+                        <li><strong>Unified Data Lake:</strong> CSPM findings, CWPP events, CIEM permissions, DSPM data locations, and CDR forensics all flow into Singularity Data Lake</li>
+                        <li><strong>Cross-Layer Correlation:</strong> Purple AI can connect "misconfig + lateral movement + data access" into a single incident (not three isolated alerts)</li>
+                        <li><strong>Shared Investigation:</strong> Analysts hunt threats across all layers in one console—no switching between tools</li>
+                        <li><strong>Unified Response:</strong> Auto-remediation can patch configs, revoke credentials, kill processes—all coordinated from one decision</li>
+                    </ul>
+                </div>
+
+                <div class="scenario-box" style="background: #e3f2fd; border-color: #2196f3;">
+                    <h4>☁️ Cloud Workload Security (CWPP Deep Dive)</h4>
+                    <p><strong>What it protects:</strong> Real-time cloud workload protection with AI-powered detection and automated response for VMs, containers, and CaaS across AWS, Azure, GCP, and private clouds.</p>
+                    <p style="margin-top: 10px;"><strong>Key Technology: eBPF-based agent</strong>—stable and efficient with no kernel dependencies or kernel panics necessary, maintaining speed and uptime.</p>
+                    <p style="margin-top: 10px;"><strong>Detection Engines:</strong></p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>AI-powered behavioral detection (process execution, privilege escalation, lateral movement)</li>
+                        <li>Container-specific threats (container escape, image tampering, registry manipulation)</li>
+                        <li>Cryptominers & fileless malware (behavioral + heuristics)</li>
+                        <li>Zero-day exploits via behavioral AI (not just signatures)</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>Multi-Cloud Support:</strong> Automatically deploy across AWS, Azure, GCP, private clouds, and Kubernetes environments without manual configuration.</p>
+                </div>
+
+                <div class="note">
+                    <strong>🎯 Cloud Native Security (Agentless Complement):</strong> For teams that can't deploy agents on every workload, Singularity Cloud Native Security is an agentless CNAPP with a unique Offensive Security Engine™ for multi-cloud environments—suitable for compliance-heavy or immutable infrastructure deployments.
+                </div>
+
+                <div class="note" style="background: #fff3e0; border-color: #ff9800; margin-top: 20px;">
+                    <strong>💡 Cloud Data Security Angle:</strong> Singularity Cloud Data Security provides AI-powered threat detection for cloud storage — protecting S3, Azure Blob, GCS from data exfiltration, ransomware, and insider threats. Complements DSPM's posture with runtime data access controls.
+                </div>
+            </div>
+
+            <!-- TOPIC 8: Identity Security -->
+            <div class="topic-section">
+                <div class="topic-header">
+                    <div class="topic-number">8</div>
+                    <div>
+                        <h2>Identity Security (Singularity for Identity)</h2>
+                        <div class="topic-subtitle">Protect user credentials and access rights</div>
+                    </div>
+                </div>
+
+                <div class="definition">
+                    <h4>💡 What is Identity Security?</h4>
+                    <p>
+                        Identity is often the weakest link in security. Once an attacker steals Sarah's credentials (username & password), they can impersonate her, access her files, and move laterally through the network. Singularity for Identity protects credentials and detects abuse:
+                    </p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>Detects credential theft and compromised credentials</li>
+                        <li>Monitors for unusual login patterns (Sarah logging in from 3 countries in 30 minutes = compromise)</li>
+                        <li>Manages Active Directory (AD) security to prevent lateral movement</li>
+                        <li>Integrates with SIEM/XDR to correlate identity threats with endpoint threats</li>
+                    </ul>
+                </div>
+
+                <div class="scenario-box">
+                    <h4>🎬 Scenario: Credential Theft & Lateral Movement</h4>
+                    <p><strong>Day 22:</strong> An attacker who breached Sarah's Mac steals her Windows domain credentials. They then use Sarah's identity to access the Finance team's shared folder and the HR database.</p>
+                    <p><strong>Without Identity Security:</strong> Security team doesn't know Sarah's credentials were compromised. Attacker quietly reads sensitive data for days.</p>
+                    <p><strong>With Singularity for Identity:</strong></p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>✓ Detects credential theft event on Sarah's Mac (EDR alert)</li>
+                        <li>✓ Monitors Sarah's identity: flagged login from new IP, unusual time-of-day, access to systems she never uses</li>
+                        <li>✓ Automatic response: Force Sarah to re-authenticate, revoke stolen credentials, alert her manager</li>
+                        <li>✓ Blocks the attacker's lateral movement (even though they have Sarah's password, security policies prevent access)</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>Result:</strong> Attacker's access revoked immediately. No sensitive data stolen because identity protection caught the abuse.</p>
+                </div>
+
+                <div class="key-points">
+                    <h4>🔑 Identity Security Capabilities</h4>
+                    <ul>
+                        <li><strong>Credential Monitoring:</strong> Detects stolen passwords, API keys, tokens</li>
+                        <li><strong>Anomalous Login Detection:</strong> Flags impossible travel, unusual access times, new devices</li>
+                        <li><strong>Privilege Escalation Blocking:</strong> Prevents lateral movement even with valid credentials</li>
+                        <li><strong>Active Directory Hardening:</strong> Protects AD from attacks like Kerberoasting, Pass-the-Hash</li>
+                        <li><strong>Conditional Access:</strong> Requires additional authentication for sensitive systems (e.g., MFA for finance access)</li>
+                        <li><strong>XDR Integration:</strong> Links identity threats to endpoint threats for full-picture visibility</li>
+                    </ul>
+                </div>
+
+                <div class="comparison-table">
+                    <tr>
+                        <th>Layer</th>
+                        <th>Protection Type</th>
+                        <th>What It Stops</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Endpoint (EPP/EDR)</strong></td>
+                        <td>Malware detection & response</td>
+                        <td>Malicious files, processes, lateral movement via infected device</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cloud (Singularity Cloud)</strong></td>
+                        <td>Cloud infrastructure protection</td>
+                        <td>Misconfigured buckets, compromised cloud credentials, data exfiltration</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Identity (Singularity for Identity)</strong></td>
+                        <td>Credential & access control</td>
+                        <td>Stolen credentials, lateral movement, privilege escalation, account abuse</td>
+                    </tr>
+                    <tr>
+                        <td><strong>XDR (Unified)</strong></td>
+                        <td>Cross-layer correlation</td>
+                        <td>Multi-stage attacks that use all three layers</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Conclusion -->
+            <div class="topic-section">
+                <div class="topic-header">
+                    <div class="topic-number">✓</div>
+                    <div>
+                        <h2>The Complete Picture</h2>
+                        <div class="topic-subtitle">How all these pieces work together</div>
+                    </div>
+                </div>
+
+                <div class="scenario-box">
+                    <h4>🎬 The Full Attack Timeline (Recap)</h4>
+                    <p><strong>Day 10:</strong> Attacker sends phishing email with malware → EPP blocks & quarantines</p>
+                    <p><strong>Day 15:</strong> Attacker tries zero-day exploit → EDR detects suspicious behavior, isolates Mac</p>
+                    <p><strong>Day 20:</strong> Attacker manages to escape isolation, steals Sarah's credentials → Identity Security detects unauthorized access to Finance and HR systems</p>
+                    <p><strong>Day 20 (cont):</strong> Attacker accesses AWS S3 bucket → Singularity Cloud detects anomalous data download</p>
+                    <p><strong>Immediately:</strong> XDR correlates all events: "APT Campaign - Endpoint to Cloud Exfiltration Attempt" → Unified incident created, auto-response triggered across all systems</p>
+                    <p><strong>Deep Visibility:</strong> Forensic timeline generated for the entire attack chain, showing exactly what happened and when</p>
+                    <p><strong>Custom STAR Rule:</strong> TechCorp creates new rule to detect similar behavior in the future</p>
+                    <p><strong>Purple AI:</strong> Analyzes the attack, recommends hardening actions, flags 14 other endpoints with similar indicators</p>
+                </div>
+
+                <div class="key-points">
+                    <h4>🎯 The Singularity Platform in One Sentence</h4>
+                    <p style="font-size: 1.1em; font-weight: bold; color: #667eea; margin-top: 20px;">
+                        "SentinelOne protects your entire security ecosystem (endpoints, cloud, identity), detects sophisticated attacks automatically (EDR + XDR + AI), scales investigation capacity with autonomous AI that works 24/7 (Purple AI Agentic), and enables response in seconds—not days."
+                    </p>
+                </div>
+
+                <div class="learning-path">
+                    <h4>🎓 Next Steps for Learning</h4>
+                    <ol>
+                        <li><strong>Hands-on Lab:</strong> Deploy SentinelOne agent on a test MacBook and trigger some alerts (benign test files)</li>
+                        <li><strong>Console Exploration:</strong> Log into a test environment and explore each module: Endpoints, Threats, Deep Visibility, Rules, Cloud</li>
+                        <li><strong>Rule Building:</strong> Write 1 simple STAR Custom Rule (e.g., "Alert if 500+ files accessed in 1 minute")</li>
+                        <li><strong>Threat Hunting:</strong> Use Deep Visibility to search for a specific indicator (IP address, domain, process name)</li>
+                        <li><strong>Real Incident:</strong> Study a real attack case study and trace it through each SentinelOne module</li>
+                    </ol>
+                </div>
+            </div>
+
+        </div>
+
+        <footer>
+            <p><strong>SentinelOne Beginners Guide</strong> • Built for educational purposes</p>
+            <p style="margin-top: 10px; font-size: 0.9em; color: #999;">
+                This guide uses simplified scenarios for learning. Real-world incident response involves additional steps, compliance considerations, and team coordination. Always consult official documentation and your security team for production environments.
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
